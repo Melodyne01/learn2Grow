@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UsersController!{% endblock %}
+
+{% block body %}
+<div class="uk-section uk-section-muted">
+    <div class="uk-container">
+        <h3>My informations</h3>
+        <div class="uk-margin">
+            <img class="uk-margin-small-right uk-border-circle" src="{{ asset('images/photo2.jpg') }}" width="150" height="150" alt="Border pill">
+        </div>
+        <form class="uk-grid-small" uk-grid>
+            <div class="uk-width-1-2@s">
+                <input class="uk-input" type="text" placeholder="{{user.firstname}}" aria-label="50" disabled>
+            </div>
+            <div class="uk-width-1-2@s">
+                <input class="uk-input" type="text" placeholder="{{user.lastname}}" aria-label="50" disabled>
+            </div>
+            <div class="uk-width-1-1">
+                <input class="uk-input" type="text" placeholder="{{user.email}}" aria-label="100" disabled>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="uk-section uk-section-default">
+    <div class="uk-container">
+        <h3>My quizzes</h3>
+        <a href="{{path('app_quizzes_create')}}" class="uk-button uk-button-primary">+ Add quizz</a>
+        <table class="uk-table uk-table-striped">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Created At</th>
+                    <th>Edit</th>
+                </tr>
+            </thead>
+            <tbody>
+        {% for quizz in quizzes %}
+            <tr>
+                <td>{{quizz.title}}</td>
+                <td>{{quizz.createdAt|date("Y-m-d")}}</td>
+                <td><a href="{{path('app_quizzes_details', {id:quizz.id})}}"><span uk-icon="file-edit"></span></a></td>
+            </tr>
+        {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="uk-section uk-section-muted">
+    <div class="uk-container">
+        <h3>My categories</h3>
+        <a href="" class="uk-button uk-button-primary">+ Add category</a>
+        <table class="uk-table uk-table-striped">
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Created At</th>
+                    <th>Edit</th>
+                </tr>
+            </thead>
+            <tbody>
+        {% for category in categories %}
+            <tr>
+                <td>{{category.name}}</td>
+                <td>{{category.createdAt|date("Y-m-d")}}</td>
+                <td><a href=""><span uk-icon="file-edit"></span></a></td>
+            </tr>
+        {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
