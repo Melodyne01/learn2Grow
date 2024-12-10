@@ -20,18 +20,23 @@
         {% endblock %}
     </head>
     <body>
-        <div class="uk-height-large" uk-height-viewport="expand: true">
-            <div class="uk-child-width-1-1@s" uk-grid>
-                <div class="uk-background-cover uk-height-custom-large uk-flex uk-flex-center uk-flex-middle header" uk-parallax="bgy: -200" style="background-image: url(images/bg.jpg);">
-                    <div class="uk-container">
-                        <div class="uk-card uk-card-transparent uk-card-large uk-card-body uk-width-1-2@m uk-width-1-1@s" uk-scrollspy="cls: uk-animation-slide-left; repeat: false">
-                            <h1>WE DESIGN FOR YOR SPACE</h1>
-                            <p class="uk-padding-large subtitle uk-text-left uk-padding-remove-left uk-padding-remove-right">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                            <a href="#" class="uk-button uk-text-center uk-width-1-2@m uk-width-1-1@s uk-border-rounded uk-align-left uk-button-primary">Nous découvrir</a>
-                        </div>
+        <nav class="uk-navbar-container">
+            <div class="uk-container">
+                <div uk-navbar>
+        
+                    <div class="uk-navbar-left">
+        
+                        <ul class="uk-navbar-nav">
+                            <li class="uk-active"><a href="{{path('app_home')}}"><img src="{{ asset('images/logo.png') }}" width="150"  alt="">
+                            </a></li>
+                            <li><a href="{{path('app_home')}}">Learn, Grow, Succeed</a></li>
+                        </ul>
+        
                     </div>
+        
                 </div>
             </div>
+        </nav>
             <div uk-grid>
                 <div class="uk-width-1-4@m uk-width-1-6@l uk-width-1-1@s">
                     <div class="sidebar uk-card-default uk-card-body">
@@ -45,34 +50,13 @@
                             <li class="uk-nav-header">Mon parcours</li>
                             <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: table"></span>Mes objectifs</a></li>
                             <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: thumbnails"></span>Mon bilan</a></li>
-                            <li><a href=""><span class="uk-margin-small-right" uk-icon="icon: trash"></span>Mon contenu</a></li>
+                            <li><a href=""><span class="uk-margin-small-right" uk-icon="icon: trash"></span>Mes certifications</a></li>
                             <li class="uk-nav-divider"></li>
                             <li><a href="{{path('app_profile')}}"><img class="uk-margin-small-right uk-border-circle" src="{{ asset('images/photo2.jpg') }}" width="30" height="30" alt="Border pill">Mon compte</a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="uk-width-3-4@m uk-width-5-6@l uk-width-1-1@s">
-                    <div class="uk-section-default uk-margin-top">
-                        <div class="uk-section uk-light uk-background-cover" style="background-image: url(./Images/logo.jpg)">
-                            <div class="uk-container">
-                    
-                                <h3>Section with Images</h3>
-                    
-                                <div class="uk-grid-match uk-child-width-1-3@m" uk-grid>
-                                    <div>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
-                                    </div>
-                                    <div>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
-                                    </div>
-                                    <div>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
-                                    </div>
-                                </div>
-                    
-                            </div>
-                        </div>
-                    </div>
                     <div class="uk-section-default uk-margin-large-top">
                         <h3>Notre selection pour vous</h3>
                         <div class="uk-slider-container-offset" uk-slider>

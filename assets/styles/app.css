@@ -26,16 +26,16 @@ h2{
 }
 .uk-button{
     border-radius: 0px;
-    background-color: white;
-    color: black;
+    background-color: #164B81;
+    color: white;
 }
 .uk-button:hover{
-    background-color: black;
-    color: white;
+    background-color: #A8C941;
+    color: black;
     transition: .5s;
 }
 .uk-height-custom-large{
-    height: 50vh;
+    height: 30vh;
 }
 
 .uk-card-transparent h1{
@@ -76,15 +76,15 @@ h1 span{
     list-style: none;
     margin: 20px 0px;
 }
-@media (min-width: 1200px) {
-    .uk-card-large .uk-card-body, .uk-card-large.uk-card-body {
-        padding: 0px; 
-    }
-    .uk-margin-large-top {
-        margin-top: 20px !important;
-    }
+.uk-subnav-pill>.uk-active>a {
+    background-color: #164B81;
+    color: #fff;
 }
-
+.uk-link, a {
+    color: #164B81;
+    text-decoration: none;
+    cursor: pointer;
+}
 @media screen and (max-width: 960px) {
 }
 
