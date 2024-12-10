@@ -2,19 +2,20 @@
 
 namespace App\Controller;
 
-use App\Entity\Certification;
 use DateTime;
 use DateTimeZone;
+use App\Entity\User;
 use App\Entity\Quizz;
 use App\Entity\Answer;
 use App\Entity\Question;
 use App\Entity\UserAnswer;
+use App\Entity\Certification;
 use App\Form\CreateQuizzType;
-use App\Repository\CertificationRepository;
-use App\Repository\QuestionRepository;
 use App\Repository\QuizzRepository;
+use App\Repository\QuestionRepository;
 use App\Repository\UserAnswerRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Repository\CertificationRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -43,11 +44,40 @@ class QuizzesController extends AbstractController
     #[Route('/quizzes', name: 'app_quizzes')]
     public function index(): Response
     {
+
+        $quizzes = $this->quizzRepo->findAll();
+
+        $quizzesWithCertificationStatus = [];
+        foreach ($quizzes as $quiz) {
+            $isCertified = $this->certificationRepo->findOneBy([
+                'quizz' => $quiz,
+                'user' => $this->getUser(),
+            ]);
+
+            $quizzesWithCertificationStatus[] = [
+                'quizz' => $quiz,
+                'isCertified' => (bool)$isCertified,
+            ];
+        }
+
         $quizzes = $this->quizzRepo->findAll();
         return $this->render('quizzes/index.html.twig', [
+            'quizzes' => $quizzesWithCertificationStatus,
+        ]);
+    }
+
+    #[Route('/myQuizzes', name: 'app_my_quizzes')]
+    public function quizzes(): Response
+    {
+
+        $quizzes = $this->quizzRepo->findBy([
+            "createdBy" => $this->getUser()
+        ]);
+        return $this->render('quizzes/myquizzes.html.twig', [
             'quizzes' => $quizzes,
         ]);
     }
+
 
     #[Route('/quizzes/create', name: 'app_quizzes_create')]
     public function create(Request $request): Response

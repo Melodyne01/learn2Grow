@@ -33,7 +33,7 @@ class LeaderboardsController extends AbstractController
             "quizz" => $quizz
         ],
         ["result" => "DESC"]);
-        return $this->render('leaderboards/leaderboeard.html.twig', [
+        return $this->render('leaderboards/leaderboard.html.twig', [
             'certifications' => $certifications,
             'quizz' => $quizz
         ]);

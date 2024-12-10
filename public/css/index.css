@@ -31,13 +31,16 @@ h2{
 }
 .uk-button:hover{
     background-color: #A8C941;
-    color: black;
+    color: white;
     transition: .5s;
 }
 .uk-height-custom-large{
     height: 30vh;
 }
 
+.uk-height-entire-page{
+    height: 100vh;
+}
 .uk-card-transparent h1{
     color: white;
     margin-top: 55px;

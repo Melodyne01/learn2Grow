@@ -8,6 +8,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -20,12 +21,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Firstname cannot be empty")]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Lastname cannot be empty")]
     private ?string $lastname = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Email(
+        message: "Email {{ value }} is not valid"
+    )]
+
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
@@ -66,6 +73,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\OneToMany(targetEntity: Certification::class, mappedBy: 'user')]
     private Collection $certifications;
+
+    #[Assert\EqualTo(
+        propertyPath: 'password',
+        message: 'Passwords must be equal.'
+    )]
+    public $confirmPassword;
 
     public function __construct()
     {

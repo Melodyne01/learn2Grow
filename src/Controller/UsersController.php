@@ -4,10 +4,13 @@ namespace App\Controller;
 
 use DateTime;
 use App\Entity\User;
-use App\Repository\CategoryRepository;
-use App\Repository\QuizzRepository;
+use App\Form\RegistrationType;
 use App\Repository\UserRepository;
+use App\Repository\QuizzRepository;
+use App\Repository\CategoryRepository;
+use App\Repository\CertificationRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,6 +23,7 @@ class UsersController extends AbstractController
         private UserRepository $userRepo,
         private UserPasswordHasherInterface $passwordHasher,
         private CategoryRepository $categoryRepo,
+        private CertificationRepository $certificationRepos,
         private QuizzRepository $quizzRepo
     ) {    
     }
@@ -28,16 +32,59 @@ class UsersController extends AbstractController
     #[Route('/profile', name: 'app_profile')]
     public function profile(): Response
     {
-        $myQuizzes = $this->quizzRepo->findBy(['createdBy' => $this->getUser()]);
+        $myCertificates = $this->certificationRepos->findBy(['user' => $this->getUser()]);
         $myCategories = $this->categoryRepo->findBy(['createdBy' => $this->getUser()]);
         
         return $this->render('users/profile.html.twig', [
             'user' => $this->getUser(),
-            'quizzes' => $myQuizzes,
+            'certifications' => $myCertificates,
             'categories' => $myCategories,
         ]);
     }
+
+    #[Route('/myCertificates', name: 'app_my_certificates')]
+    public function myCertificates(): Response
+    {
+        $myCertificates = $this->certificationRepos->findBy(['user' => $this->getUser()]);
+        
+        return $this->render('users/myCertificates.html.twig', [
+            'certifications' => $myCertificates,
+        ]);
+    }
     
+    #[Route('/register', name: 'app_register')]
+    public function register(Request $request): Response
+    {
+        if ($this->getUser()){
+            return $this->redirectToRoute('app_profile');
+        }
+        
+        $this->CheckUserInDatabase();
+        //Creation d'un nouvel objet User
+        $user = new User();
+        //Creation du formulaire sur base d'un formulaire crée au préalable 
+        $form = $this->createForm(RegistrationType::class, $user);
+
+        $form->handleRequest($request);
+
+        //Vérification de la conformité des données entrées par l'utilisateur
+        if ($form->isSubmitted() && $form->isValid()) {
+            //Chiffrement du mot de passe selon l'algorytme Bcrypt
+            $hashedPassword = $this->passwordHasher->hashPassword($user, $user->getPassword());
+            $user->setPassword($hashedPassword);
+            $user->setAccountType("ROLE_ADMIN");
+            $user->setCreatedAt(new DateTime('Europe/Paris'));
+            $this->manager->getManager()->persist($user);
+            //Envoie des données vers la base de données
+            $this->manager->getManager()->flush();
+            
+            $this->addFlash("success", "Le compte à bien été créé");            
+        }
+        return $this->render('users/login.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
     #[Route('/login', name: 'login')]
     public function index(): Response
     {
@@ -48,8 +95,7 @@ class UsersController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
         $this->addFlash("danger", "Les informations de connexion ne sont pas valides");
-        return $this->render('users/login.html.twig', [
-        ]);
+        return $this->redirectToRoute('app_register');
     }
 
     #[Route('/logout', name: 'logout')]
